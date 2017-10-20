@@ -34,9 +34,9 @@
     <description>Hamcrest matchers tailored for Apache Sling</description>
 
     <scm>
-        <connection>scm:svn:http://svn.apache.org/repos/asf/sling/trunk/testing/hamcrest</connection>
-        <developerConnection>scm:svn:https://svn.apache.org/repos/asf/sling/trunk/testing/hamcrest</developerConnection>
-        <url>http://svn.apache.org/viewvc/sling/trunk/testing/hamcrest</url>
+        <connection>scm:git:https://gitbox.apache.org/repos/asf/sling-org-apache-sling-testing-hamcrest.git</conncetion>
+        <developerConnection>scm:git:https://gitbox.apache.org/repos/asf/sling-org-apache-sling-testing-hamcrest.git</developerConnection>
+        <url>https://gitbox.apache.org/repos/asf?p=sling-org-apache-sling-testing-hamcrest.git</url>
     </scm>
     
     <dependencies>

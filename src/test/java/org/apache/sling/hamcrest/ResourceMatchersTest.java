@@ -16,13 +16,15 @@
  */
 package org.apache.sling.hamcrest;
 
+import static org.hamcrest.MatcherAssert.assertThat;
+
 import java.util.Map;
 
 import org.apache.sling.api.resource.Resource;
 import org.apache.sling.api.resource.ResourceResolver;
 import org.apache.sling.testing.mock.sling.junit.SlingContext;
 import org.hamcrest.Matchers;
-import org.junit.Assert;
+
 import org.junit.Rule;
 import org.junit.Test;
 
@@ -40,8 +42,8 @@ public class ResourceMatchersTest {
                 "some other key", "some other value");
         
         Resource resource = context.resourceResolver().getResource("/resource");
-        Assert.assertThat(resource, ResourceMatchers.resourceType("some/type"));
-        Assert.assertThat(resource, Matchers.not(ResourceMatchers.resourceType("some/other/type")));
+        assertThat(resource, ResourceMatchers.resourceType("some/type"));
+        assertThat(resource, Matchers.not(ResourceMatchers.resourceType("some/other/type")));
     }
 
     @Test
@@ -49,8 +51,8 @@ public class ResourceMatchersTest {
         context.build().resource("/resource");
         
         Resource resource = context.resourceResolver().getResource("/resource");
-        Assert.assertThat(resource, ResourceMatchers.path("/resource"));
-        Assert.assertThat(resource, Matchers.not(ResourceMatchers.path("some/other/name")));
+        assertThat(resource, ResourceMatchers.path("/resource"));
+        assertThat(resource, Matchers.not(ResourceMatchers.path("some/other/name")));
     }
 
     @Test
@@ -58,8 +60,8 @@ public class ResourceMatchersTest {
         context.build().resource("/resource");
         
         Resource resource = context.resourceResolver().getResource("/resource");
-        Assert.assertThat(resource, ResourceMatchers.name("resource"));
-        Assert.assertThat(resource, Matchers.not(ResourceMatchers.name("some/other/name")));
+        assertThat(resource, ResourceMatchers.name("resource"));
+        assertThat(resource, Matchers.not(ResourceMatchers.name("some/other/name")));
     }
 
     @Test
@@ -77,20 +79,20 @@ public class ResourceMatchersTest {
                 .build();
         
         Resource resource = context.resourceResolver().getResource("/resource");
-        Assert.assertThat(resource, ResourceMatchers.props(expectedProperties));
+        assertThat(resource, ResourceMatchers.props(expectedProperties));
         
         // test existing key with not matching value
         expectedProperties = ImmutableMap.<String, Object>builder()
                 .put("key1", "value1")
                 .put("key3", "value3")
                 .build();
-        Assert.assertThat(resource, Matchers.not(ResourceMatchers.props(expectedProperties)));
+        assertThat(resource, Matchers.not(ResourceMatchers.props(expectedProperties)));
         
         // test non-existing key
         expectedProperties = ImmutableMap.<String, Object>builder()
                 .put("key5", "value5")
                 .build();
-        Assert.assertThat(resource, Matchers.not(ResourceMatchers.props(expectedProperties)));
+        assertThat(resource, Matchers.not(ResourceMatchers.props(expectedProperties)));
     }
 
     @Test
@@ -108,38 +110,38 @@ public class ResourceMatchersTest {
         };
         
         Resource resource = context.resourceResolver().getResource("/resource");
-        Assert.assertThat(resource, ResourceMatchers.props(expectedProperties));
+        assertThat(resource, ResourceMatchers.props(expectedProperties));
 
         // test existing key with not matching value
         expectedProperties = new Object[] {
                 "key1", "value1",
                 "key3", new int[] { 1, 2, 5 }
         };
-        Assert.assertThat(resource, Matchers.not(ResourceMatchers.props(expectedProperties)));
+        assertThat(resource, Matchers.not(ResourceMatchers.props(expectedProperties)));
 
         expectedProperties = new Object[] {
                 "key1", "value1",
                 "key3", new int[] { 1, 2 }
         };
-        Assert.assertThat(resource, Matchers.not(ResourceMatchers.props(expectedProperties)));
+        assertThat(resource, Matchers.not(ResourceMatchers.props(expectedProperties)));
         
         expectedProperties = new Object[] {
                 "key1", "value1",
                 "key3", 1
         };
-        Assert.assertThat(resource, Matchers.not(ResourceMatchers.props(expectedProperties)));
+        assertThat(resource, Matchers.not(ResourceMatchers.props(expectedProperties)));
         
         expectedProperties = new Object[] {
                 "key1", "value1",
                 "key3", null
         };
-        Assert.assertThat(resource, Matchers.not(ResourceMatchers.props(expectedProperties)));
+        assertThat(resource, Matchers.not(ResourceMatchers.props(expectedProperties)));
         
         // test non-existing key
         expectedProperties = new Object[] {
                 "key5", "value5"
         };
-        Assert.assertThat(resource, Matchers.not(ResourceMatchers.props(expectedProperties)));
+        assertThat(resource, Matchers.not(ResourceMatchers.props(expectedProperties)));
     }
 
     @Test
@@ -149,7 +151,7 @@ public class ResourceMatchersTest {
             .resource("/parent/child2");
         
         Resource resource = context.resourceResolver().getResource("/parent");
-        Assert.assertThat(resource, ResourceMatchers.hasChildren("child1"));
+        assertThat(resource, ResourceMatchers.hasChildren("child1"));
     }
     
     @Test
@@ -165,17 +167,17 @@ public class ResourceMatchersTest {
                 .build();
         
         Resource resource = context.resourceResolver().getResource("/resource");
-        Assert.assertThat(resource, ResourceMatchers.nameAndProps("resource", expectedProperties));
+        assertThat(resource, ResourceMatchers.nameAndProps("resource", expectedProperties));
         
         // test not matching name
-        Assert.assertThat(resource, Matchers.not(ResourceMatchers.nameAndProps("resource1", expectedProperties)));
+        assertThat(resource, Matchers.not(ResourceMatchers.nameAndProps("resource1", expectedProperties)));
         
         // test existing key with not matching value
         expectedProperties = ImmutableMap.<String, Object>builder()
                 .put("key1", "value1")
                 .put("key2", "value3")
                 .build();
-        Assert.assertThat(resource, Matchers.not(ResourceMatchers.nameAndProps("resource", expectedProperties)));
+        assertThat(resource, Matchers.not(ResourceMatchers.nameAndProps("resource", expectedProperties)));
     }
 
     @Test
@@ -191,17 +193,17 @@ public class ResourceMatchersTest {
         };
         
         Resource resource = context.resourceResolver().getResource("/resource");
-        Assert.assertThat(resource, ResourceMatchers.nameAndProps("resource", expectedProperties));
+        assertThat(resource, ResourceMatchers.nameAndProps("resource", expectedProperties));
         
         // test not matching name
-        Assert.assertThat(resource, Matchers.not(ResourceMatchers.nameAndProps("resource1", expectedProperties)));
+        assertThat(resource, Matchers.not(ResourceMatchers.nameAndProps("resource1", expectedProperties)));
         
         // test existing key with not matching value
         expectedProperties = new Object[] {
                 "key1", "value1",
                 "key2", "value3"
         };
-        Assert.assertThat(resource, Matchers.not(ResourceMatchers.nameAndProps("resource", expectedProperties)));
+        assertThat(resource, Matchers.not(ResourceMatchers.nameAndProps("resource", expectedProperties)));
     }
 
     @Test
@@ -211,9 +213,9 @@ public class ResourceMatchersTest {
             .resource("/parent/child2");
         
         Resource resource = context.resourceResolver().getResource("/parent");
-        Assert.assertThat(resource, ResourceMatchers.containsChildrenInAnyOrder("child2", "child1"));
-        Assert.assertThat(resource, ResourceMatchers.containsChildrenInAnyOrder("child1", "child2"));
-        Assert.assertThat(resource, Matchers.not(ResourceMatchers.containsChildren("child2", "child3", "child1")));
+        assertThat(resource, ResourceMatchers.containsChildrenInAnyOrder("child2", "child1"));
+        assertThat(resource, ResourceMatchers.containsChildrenInAnyOrder("child1", "child2"));
+        assertThat(resource, Matchers.not(ResourceMatchers.containsChildren("child2", "child3", "child1")));
     }
 
     @Test
@@ -223,9 +225,9 @@ public class ResourceMatchersTest {
             .resource("/parent/child2");
         
         Resource resource = context.resourceResolver().getResource("/parent");
-        Assert.assertThat(resource, ResourceMatchers.containsChildren("child1", "child2"));
-        Assert.assertThat(resource, Matchers.not(ResourceMatchers.containsChildren("child2", "child1")));
-        Assert.assertThat(resource, Matchers.not(ResourceMatchers.containsChildren("child1", "child2", "child3")));
+        assertThat(resource, ResourceMatchers.containsChildren("child1", "child2"));
+        assertThat(resource, Matchers.not(ResourceMatchers.containsChildren("child2", "child1")));
+        assertThat(resource, Matchers.not(ResourceMatchers.containsChildren("child1", "child2", "child3")));
     }
 
 }

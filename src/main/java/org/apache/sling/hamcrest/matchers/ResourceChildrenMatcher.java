@@ -56,7 +56,7 @@ public class ResourceChildrenMatcher extends TypeSafeMatcher<Resource> {
                 this.iterarableMatcher = org.hamcrest.collection.IsIterableContainingInAnyOrder.containsInAnyOrder(resourceMatchers);
             }
         } else {
-            this.iterarableMatcher = org.hamcrest.core.IsCollectionContaining.hasItems(resourceMatchers.toArray(new ResourceNameMatcher[0]));
+            this.iterarableMatcher = org.hamcrest.core.IsIterableContaining.hasItems(resourceMatchers.toArray(new ResourceNameMatcher[0]));
         }
     }
 

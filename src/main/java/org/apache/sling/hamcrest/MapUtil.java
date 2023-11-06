@@ -20,7 +20,6 @@ package org.apache.sling.hamcrest;
 
 import java.util.Arrays;
 import java.util.Collections;
-import java.util.Dictionary;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -43,13 +42,8 @@ final class MapUtil {
         if (args == null || args.length == 0) {
             return Collections.emptyMap();
         }
-        if (args.length == 1) {
-            if (args[0] instanceof Map) {
-                return (Map<String, Object>)args[0];
-            }
-            else if (args[0] instanceof Dictionary) {
-                return toMap((Dictionary<String, Object>)args[0]);
-            }
+        if (args.length == 1 && args[0] instanceof Map) {
+            return (Map<String, Object>)args[0];
         }
         if (args.length % 2 != 0) {
             throw new IllegalArgumentException("args must be an even number of name/values:" + Arrays.asList(args));

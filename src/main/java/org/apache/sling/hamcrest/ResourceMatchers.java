@@ -30,15 +30,15 @@ import org.hamcrest.Matcher;
 import org.hamcrest.Matchers;
 
 /**
- * A collection of <tt>Matcher</tt>s that work on the Resource API level
+ * A collection of {@code Matcher}s that work on the Resource API level
  *
  */
 public final class ResourceMatchers {
     
     /**
-     * Matches resources which have amongst their children the specified <tt>children</tt>.
+     * Matches resources which have amongst their children the specified {@code children}.
      * 
-     * Child resources not contained in the specified <tt>children</tt> are not validated. The order of the children does not matter.
+     * Child resources not contained in the specified {@code children} are not validated. The order of the children does not matter.
      * 
      * <pre>
      * assertThat(resource, hasChildren('child1', 'child2'));
@@ -52,7 +52,7 @@ public final class ResourceMatchers {
     }
     
     /**
-     * Matches resources which have exactly the children with the names given in <tt>children</tt>. The order is validated as well.
+     * Matches resources which have exactly the children with the names given in {@code children}. The order is validated as well.
      * 
      * <pre>
      * assertThat(resource, containsChildren('child1', 'child2'));
@@ -67,7 +67,7 @@ public final class ResourceMatchers {
     
     
     /**
-     * Matches resources which have exactly the children with the names given in <tt>children</tt>. The order is not validated.
+     * Matches resources which have exactly the children with the names given in {@code children}. The order is not validated.
      * 
      * <pre>
      * assertThat(resource, containsChildrenInAnyOrder('child1', 'child2'));
@@ -109,7 +109,7 @@ public final class ResourceMatchers {
     }
 
     /**
-     * Matches resources with a resource type set to the specified <tt>resourceType</tt>
+     * Matches resources with a resource type set to the specified {@code resourceType}
      * 
      * <pre>
      * assertThat(resource, resourceOfType('my/app'));
@@ -122,9 +122,9 @@ public final class ResourceMatchers {
     }
 
     /**
-     * Matches resources which has at least the specified <tt>properties</tt> defined with matching values
+     * Matches resources which has at least the specified {@code properties} defined with matching values
      * 
-     * <p>Values not declared in the the <tt>properties</tt> parameter are not validated.</p>
+     * <p>Values not declared in the the {@code properties} parameter are not validated.</p>
      * <pre>
      * Map&lt;String, Object&gt; expectedProperties = new HashMap&lt;&gt;();
      * expectedProperties.put("jcr:title", "Node title");
@@ -141,9 +141,9 @@ public final class ResourceMatchers {
     }
 
     /**
-     * Matches resources which has at least the specified <tt>properties</tt> defined with matching values
+     * Matches resources which has at least the specified {@code properties} defined with matching values
      * 
-     * <p>Values not declared in the the <tt>properties</tt> parameter are not validated.</p>
+     * <p>Values not declared in the the {@code properties} parameter are not validated.</p>
      * <pre>
      * Map&lt;String, Object&gt; expectedProperties = new HashMap&lt;&gt;();
      * expectedProperties.put("jcr:title", "Node title");
@@ -160,9 +160,9 @@ public final class ResourceMatchers {
     }
 
     /**
-     * Matches resources which has the given name and at least the specified <tt>properties</tt> defined with matching values
+     * Matches resources which has the given name and at least the specified {@code properties} defined with matching values
      * 
-     * <p>Values not declared in the the <tt>properties</tt> parameter are not validated.</p>
+     * <p>Values not declared in the the {@code properties} parameter are not validated.</p>
      * <pre>
      * Map&lt;String, Object&gt; expectedProperties = new HashMap&lt;&gt;();
      * expectedProperties.put("jcr:title", "Node title");
@@ -180,9 +180,9 @@ public final class ResourceMatchers {
     }
 
     /**
-     * Matches resources which has the given name and at least the specified <tt>properties</tt> defined with matching values
+     * Matches resources which has the given name and at least the specified {@code properties} defined with matching values
      * 
-     * <p>Values not declared in the the <tt>properties</tt> parameter are not validated.</p>
+     * <p>Values not declared in the the {@code properties} parameter are not validated.</p>
      * <pre>
      * Map&lt;String, Object&gt; expectedProperties = new HashMap&lt;&gt;();
      * expectedProperties.put("jcr:title", "Node title");

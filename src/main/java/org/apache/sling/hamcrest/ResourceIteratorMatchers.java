@@ -24,7 +24,7 @@ import org.apache.sling.hamcrest.matchers.ResourceIteratorPathMatcher;
 import org.hamcrest.Matcher;
 
 /**
- * A collection of <tt>Matcher</tt>s for resource iterators.
+ * A collection of {@code Matcher}s for resource iterators.
  */
 public final class ResourceIteratorMatchers {
     

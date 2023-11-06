@@ -45,10 +45,10 @@ final class MapUtil {
         }
         if (args.length == 1) {
             if (args[0] instanceof Map) {
-                return (Map)args[0];
+                return (Map<String, Object>)args[0];
             }
             else if (args[0] instanceof Dictionary) {
-                return toMap((Dictionary)args[0]);
+                return toMap((Dictionary<String, Object>)args[0]);
             }
         }
         if (args.length % 2 != 0) {

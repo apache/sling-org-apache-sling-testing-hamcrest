@@ -46,7 +46,7 @@ public class ResourcePropertiesMatcher extends TypeSafeMatcher<Resource> {
 
     @Override
     protected boolean matchesSafely(Resource item) {
-        ValueMap givenProps = item.adaptTo(ValueMap.class);
+        ValueMap givenProps = item.getValueMap();
         for (Map.Entry<String, Object> prop : expectedProps.entrySet()) {
             Object givenValue = givenProps.get(prop.getKey());
             Object expectedValue = prop.getValue();
@@ -93,11 +93,7 @@ public class ResourcePropertiesMatcher extends TypeSafeMatcher<Resource> {
 
     @Override
     protected void describeMismatchSafely(Resource item, Description mismatchDescription) {
-        Map<String, Object> actualProperties = item.adaptTo(ValueMap.class);
-        if (actualProperties == null) {
-            mismatchDescription.appendText("was Resource which does not expose a value map via adaptTo(ValueMap.class)");
-            return;
-        }
+        Map<String, Object> actualProperties = item.getValueMap();
         mismatchDescription.appendText("was Resource with properties ")
              .appendValueList("[", ",", "]", convertArraysToStrings(actualProperties).entrySet())
              .appendText(" (resource: ")

@@ -17,15 +17,14 @@
 package org.apache.sling.hamcrest;
 
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.Map;
 
 import org.apache.sling.api.resource.Resource;
-import org.apache.sling.api.resource.ResourceResolver;
 import org.apache.sling.hamcrest.matchers.ResourceChildrenMatcher;
 import org.apache.sling.hamcrest.matchers.ResourceNameMatcher;
 import org.apache.sling.hamcrest.matchers.ResourcePathMatcher;
 import org.apache.sling.hamcrest.matchers.ResourcePropertiesMatcher;
+import org.apache.sling.hamcrest.matchers.ResourceTypeMatcher;
 import org.hamcrest.Matcher;
 import org.hamcrest.Matchers;
 
@@ -109,16 +108,34 @@ public final class ResourceMatchers {
     }
 
     /**
-     * Matches resources with a resource type set to the specified {@code resourceType}
+     * Matches resources with a resource type set to the specified {@code resourceType} (exactly).
+     * In order to check for resource types allowing more specific ones use {@link #resourceTypeOrDerived(String)}.
      * 
      * <pre>
-     * assertThat(resource, resourceOfType('my/app'));
+     * assertThat(resource, resourceType('my/app'));
      * </pre>
      * @param resourceType the resource type to match
      * @return a matcher instance
      */
     public static Matcher<Resource> resourceType(String resourceType) {
-        return new ResourcePropertiesMatcher(Collections.<String, Object> singletonMap(ResourceResolver.PROPERTY_RESOURCE_TYPE, resourceType));
+        return new ResourceTypeMatcher(resourceType, false);
+    }
+
+    /**
+     * Matches resources with a resource type set to the specified {@code resourceType} or one of its sub types.
+     * In order to check for exact resource types only use {@link #resourceType(String)}.
+     * 
+     * <pre>
+     * assertThat(resource, resourceTypeOrDerived('my/app'));
+     * </pre>
+     * @param resourceType the resource type to match
+     * @return a matcher instance
+     * @since 1.1.0
+     * @see Resource#isResourceType(String)
+     * @see #resourceType(String)
+     */
+    public static Matcher<Resource> resourceTypeOrDerived(String resourceType) {
+        return new ResourceTypeMatcher(resourceType, true);
     }
 
     /**

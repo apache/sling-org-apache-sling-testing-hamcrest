@@ -22,15 +22,18 @@ import java.util.Map;
 
 import org.apache.sling.api.resource.Resource;
 import org.apache.sling.api.resource.ResourceResolver;
+import org.apache.sling.api.resource.SyntheticResource;
 import org.apache.sling.testing.mock.sling.junit.SlingContext;
 import org.hamcrest.Matchers;
-
 import org.junit.Rule;
 import org.junit.Test;
 
 import com.google.common.collect.ImmutableMap;
 
 public class ResourceMatchersTest {
+
+    // only defined in newer versions of Sling API
+    private static final String PROPERTY_RESOURCE_SUPER_TYPE = "sling:resourceSuperType";
 
     @Rule
     public final SlingContext context = new SlingContext();
@@ -44,6 +47,29 @@ public class ResourceMatchersTest {
         Resource resource = context.resourceResolver().getResource("/resource");
         assertThat(resource, ResourceMatchers.resourceType("some/type"));
         assertThat(resource, Matchers.not(ResourceMatchers.resourceType("some/other/type")));
+
+        SyntheticResource syntheticResource = new SyntheticResource(
+                context.resourceResolver(), "/synthetic", "some/type");
+        assertThat(syntheticResource, ResourceMatchers.resourceType("some/type"));
+        assertThat(syntheticResource, Matchers.not(ResourceMatchers.resourceType("some/other/type")));
+    }
+
+    @Test
+    public void testResourceTypeOrDerived() {
+        context.build().resource("/resource", 
+                ResourceResolver.PROPERTY_RESOURCE_TYPE, "some/type",
+                PROPERTY_RESOURCE_SUPER_TYPE, "some/base/type",
+                "some other key", "some other value");
+        
+        Resource resource = context.resourceResolver().getResource("/resource");
+        assertThat(resource, ResourceMatchers.resourceTypeOrDerived("some/type"));
+        assertThat(resource, ResourceMatchers.resourceTypeOrDerived("some/base/type"));
+        assertThat(resource, Matchers.not(ResourceMatchers.resourceTypeOrDerived("some/other/type")));
+
+        SyntheticResource syntheticResource = new SyntheticResource(
+                context.resourceResolver(), "/synthetic", "some/type");
+        assertThat(syntheticResource, ResourceMatchers.resourceType("some/type"));
+        assertThat(syntheticResource, Matchers.not(ResourceMatchers.resourceType("some/other/type")));
     }
 
     @Test

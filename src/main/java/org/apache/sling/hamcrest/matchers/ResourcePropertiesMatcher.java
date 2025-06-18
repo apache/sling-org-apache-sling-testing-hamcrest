@@ -29,12 +29,13 @@ import org.hamcrest.TypeSafeMatcher;
 public class ResourcePropertiesMatcher extends TypeSafeMatcher<Resource> {
 
     private final Map<String, Object> expectedProps;
+    private String firstMismatchPropertyName;
 
     public ResourcePropertiesMatcher(Map<String, Object> properties) {
         if (properties == null || properties.isEmpty()) {
             throw new IllegalArgumentException("properties is null or empty");
         }
-
+        firstMismatchPropertyName = null;
         this.expectedProps = properties;
     }
 
@@ -53,11 +54,13 @@ public class ResourcePropertiesMatcher extends TypeSafeMatcher<Resource> {
             if (givenValue != null && expectedValue != null
                     && givenValue.getClass().isArray() && expectedValue.getClass().isArray()) {
                 if (!arrayEquals(expectedValue, givenValue)) {
+                    firstMismatchPropertyName = prop.getKey();
                     return false;
                 }
             }
             else {
                 if (!objectEquals(expectedValue, givenValue)) {
+                    firstMismatchPropertyName = prop.getKey();
                     return false;
                 }
             }
@@ -99,8 +102,30 @@ public class ResourcePropertiesMatcher extends TypeSafeMatcher<Resource> {
              .appendText(" (resource: ")
              .appendValue(item)
              .appendText(")");
+        if (firstMismatchPropertyName != null) {
+            Object expectedValue = expectedProps.get(firstMismatchPropertyName);
+            Object actualValue = actualProperties.get(firstMismatchPropertyName);
+            mismatchDescription.appendText(System.lineSeparator());
+            mismatchDescription.appendText("     First mismatch in property ")
+                .appendValue(firstMismatchPropertyName)
+                .appendText(": expected ");
+            appendValueAndType(mismatchDescription, expectedValue);
+            mismatchDescription.appendText(" but was ");
+            appendValueAndType(mismatchDescription, actualValue);
+        }
     }
-    
+
+    private static void appendValueAndType(Description mismatchDescription, Object value) {
+        if (value == null) {
+            mismatchDescription.appendText("null");
+        } else {
+            mismatchDescription.appendText("value ")
+                .appendValue(value)
+                .appendText(" of type ")
+                .appendValue(value.getClass().getName());
+        }
+    }
+
     /**
      * Convert arrays to string representation to get better message if comparison fails.
      * @param props Properties

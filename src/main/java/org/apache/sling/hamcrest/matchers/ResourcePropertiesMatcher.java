@@ -1,18 +1,20 @@
 /*
- * Licensed to the Apache Software Foundation (ASF) under one or more
- * contributor license agreements.  See the NOTICE file distributed with
- * this work for additional information regarding copyright ownership.
- * The ASF licenses this file to You under the Apache License, Version 2.0
- * (the "License"); you may not use this file except in compliance with
- * the License.  You may obtain a copy of the License at
+ * Licensed to the Apache Software Foundation (ASF) under one
+ * or more contributor license agreements.  See the NOTICE file
+ * distributed with this work for additional information
+ * regarding copyright ownership.  The ASF licenses this file
+ * to you under the Apache License, Version 2.0 (the
+ * "License"); you may not use this file except in compliance
+ * with the License.  You may obtain a copy of the License at
  *
- *      http://www.apache.org/licenses/LICENSE-2.0
+ *   http://www.apache.org/licenses/LICENSE-2.0
  *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an
+ * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ * KIND, either express or implied.  See the License for the
+ * specific language governing permissions and limitations
+ * under the License.
  */
 package org.apache.sling.hamcrest.matchers;
 
@@ -41,8 +43,10 @@ public class ResourcePropertiesMatcher extends TypeSafeMatcher<Resource> {
 
     @Override
     public void describeTo(Description description) {
-        description.appendText("Resource with properties ")
-            .appendValueList("[", ",", "]", convertArraysToStrings(expectedProps).entrySet());
+        description
+                .appendText("Resource with properties ")
+                .appendValueList(
+                        "[", ",", "]", convertArraysToStrings(expectedProps).entrySet());
     }
 
     @Override
@@ -51,14 +55,15 @@ public class ResourcePropertiesMatcher extends TypeSafeMatcher<Resource> {
         for (Map.Entry<String, Object> prop : expectedProps.entrySet()) {
             Object givenValue = givenProps.get(prop.getKey());
             Object expectedValue = prop.getValue();
-            if (givenValue != null && expectedValue != null
-                    && givenValue.getClass().isArray() && expectedValue.getClass().isArray()) {
+            if (givenValue != null
+                    && expectedValue != null
+                    && givenValue.getClass().isArray()
+                    && expectedValue.getClass().isArray()) {
                 if (!arrayEquals(expectedValue, givenValue)) {
                     firstMismatchPropertyName = prop.getKey();
                     return false;
                 }
-            }
-            else {
+            } else {
                 if (!objectEquals(expectedValue, givenValue)) {
                     firstMismatchPropertyName = prop.getKey();
                     return false;
@@ -67,26 +72,24 @@ public class ResourcePropertiesMatcher extends TypeSafeMatcher<Resource> {
         }
         return true;
     }
-    
+
     private boolean objectEquals(Object value1, Object value2) {
         if (value1 == null) {
             return (value2 == null);
-        }
-        else if (value2 == null) {
+        } else if (value2 == null) {
             return (value1 == null);
-        }
-        else {
+        } else {
             return value1.equals(value2);
         }
     }
-    
+
     private boolean arrayEquals(Object array1, Object array2) {
         int length1 = Array.getLength(array1);
         int length2 = Array.getLength(array2);
         if (length1 != length2) {
             return false;
         }
-        for (int i=0; i<length1; i++) {
+        for (int i = 0; i < length1; i++) {
             if (!objectEquals(Array.get(array1, i), Array.get(array2, i))) {
                 return false;
             }
@@ -97,18 +100,21 @@ public class ResourcePropertiesMatcher extends TypeSafeMatcher<Resource> {
     @Override
     protected void describeMismatchSafely(Resource item, Description mismatchDescription) {
         Map<String, Object> actualProperties = item.getValueMap();
-        mismatchDescription.appendText("was Resource with properties ")
-             .appendValueList("[", ",", "]", convertArraysToStrings(actualProperties).entrySet())
-             .appendText(" (resource: ")
-             .appendValue(item)
-             .appendText(")");
+        mismatchDescription
+                .appendText("was Resource with properties ")
+                .appendValueList(
+                        "[", ",", "]", convertArraysToStrings(actualProperties).entrySet())
+                .appendText(" (resource: ")
+                .appendValue(item)
+                .appendText(")");
         if (firstMismatchPropertyName != null) {
             Object expectedValue = expectedProps.get(firstMismatchPropertyName);
             Object actualValue = actualProperties.get(firstMismatchPropertyName);
             mismatchDescription.appendText(System.lineSeparator());
-            mismatchDescription.appendText("     First mismatch in property ")
-                .appendValue(firstMismatchPropertyName)
-                .appendText(": expected ");
+            mismatchDescription
+                    .appendText("     First mismatch in property ")
+                    .appendValue(firstMismatchPropertyName)
+                    .appendText(": expected ");
             appendValueAndType(mismatchDescription, expectedValue);
             mismatchDescription.appendText(" but was ");
             appendValueAndType(mismatchDescription, actualValue);
@@ -119,10 +125,11 @@ public class ResourcePropertiesMatcher extends TypeSafeMatcher<Resource> {
         if (value == null) {
             mismatchDescription.appendText("null");
         } else {
-            mismatchDescription.appendText("value ")
-                .appendValue(value)
-                .appendText(" of type ")
-                .appendValue(value.getClass().getName());
+            mismatchDescription
+                    .appendText("value ")
+                    .appendValue(value)
+                    .appendText(" of type ")
+                    .appendValue(value.getClass().getName());
         }
     }
 
@@ -131,22 +138,21 @@ public class ResourcePropertiesMatcher extends TypeSafeMatcher<Resource> {
      * @param props Properties
      * @return Properties with array values converted to strings
      */
-    private Map<String,Object> convertArraysToStrings(Map<String,Object> props) {
-        SortedMap<String,Object> transformedProps = new TreeMap<String,Object>();
+    private Map<String, Object> convertArraysToStrings(Map<String, Object> props) {
+        SortedMap<String, Object> transformedProps = new TreeMap<String, Object>();
         for (Map.Entry<String, Object> entry : props.entrySet()) {
             Object value = entry.getValue();
             if (value != null && value.getClass().isArray()) {
                 StringBuilder sb = new StringBuilder();
                 sb.append("[");
-                for (int i=0; i<Array.getLength(value); i++) {
+                for (int i = 0; i < Array.getLength(value); i++) {
                     if (i > 0) {
                         sb.append(",");
                     }
                     Object item = Array.get(value, i);
                     if (item == null) {
                         sb.append("null");
-                    }
-                    else {
+                    } else {
                         sb.append(item.toString());
                     }
                 }
@@ -157,5 +163,4 @@ public class ResourcePropertiesMatcher extends TypeSafeMatcher<Resource> {
         }
         return transformedProps;
     }
-
 }

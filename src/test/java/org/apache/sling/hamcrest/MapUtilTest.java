@@ -18,53 +18,52 @@
  */
 package org.apache.sling.hamcrest;
 
-import static org.junit.Assert.assertEquals;
-
 import java.util.Collections;
 import java.util.Map;
 
+import com.google.common.collect.ImmutableMap;
 import org.junit.Test;
 
-import com.google.common.collect.ImmutableMap;
+import static org.junit.Assert.assertEquals;
 
 public class MapUtilTest {
 
-    private static final ImmutableMap<String, Object> EXPECTED_MAP = ImmutableMap.<String, Object>of("param1", "var1", "param2", 123, "param3", true);
+    private static final ImmutableMap<String, Object> EXPECTED_MAP =
+            ImmutableMap.<String, Object>of("param1", "var1", "param2", 123, "param3", true);
 
-	@Test
+    @Test
     public void testMapObjectVarargs() {
         Map<String, Object> convertedMap = MapUtil.toMap("param1", "var1", "param2", 123, "param3", true);
-        
+
         assertEquals(EXPECTED_MAP, convertedMap);
     }
- 
+
     @Test
     public void testMapObjectMap() {
         Map<String, Object> convertedMap = MapUtil.toMap(EXPECTED_MAP);
-        
+
         assertEquals(EXPECTED_MAP, convertedMap);
     }
- 
 
     @Test(expected = IllegalArgumentException.class)
     public void testMapObjectVarArgs_NotMap() {
         MapUtil.toMap("param1", "var1", "param2", 123, "param3");
     }
- 
+
     @Test
     public void testMapObjectVarargs_EmptyArgs() {
         Map<String, Object> convertedMap = MapUtil.toMap();
-        
+
         assertEquals(Collections.emptyMap(), convertedMap);
     }
- 
+
     @Test
     public void testMapObjectVarargs_Null() {
-        Map<String, Object> convertedMap = MapUtil.toMap((Object[])null);
-        
+        Map<String, Object> convertedMap = MapUtil.toMap((Object[]) null);
+
         assertEquals(Collections.emptyMap(), convertedMap);
     }
- 
+
     @Test(expected = IllegalArgumentException.class)
     public void testMapObjectVarArgs_OddNumberOfArgs() {
         MapUtil.toMap("param1", "var1", "param2", 123, "param3");

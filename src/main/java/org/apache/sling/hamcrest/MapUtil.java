@@ -27,7 +27,7 @@ import java.util.Map;
  * Map util methods.
  */
 final class MapUtil {
-    
+
     private MapUtil() {
         // static methods only
     }
@@ -43,16 +43,15 @@ final class MapUtil {
             return Collections.emptyMap();
         }
         if (args.length == 1 && args[0] instanceof Map) {
-            return (Map<String, Object>)args[0];
+            return (Map<String, Object>) args[0];
         }
         if (args.length % 2 != 0) {
             throw new IllegalArgumentException("args must be an even number of name/values:" + Arrays.asList(args));
         }
         final Map<String, Object> result = new HashMap<String, Object>();
-        for (int i=0 ; i < args.length; i+=2) {
-            result.put(args[i].toString(), args[i+1]);
+        for (int i = 0; i < args.length; i += 2) {
+            result.put(args[i].toString(), args[i + 1]);
         }
         return result;
     }
-    
 }

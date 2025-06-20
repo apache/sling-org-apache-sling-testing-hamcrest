@@ -24,23 +24,24 @@ import com.google.common.collect.ImmutableMap;
 import org.apache.sling.api.resource.Resource;
 import org.apache.sling.api.resource.ResourceResolver;
 import org.apache.sling.api.resource.SyntheticResource;
-import org.apache.sling.testing.mock.sling.junit.SlingContext;
+import org.apache.sling.testing.mock.sling.junit5.SlingContext;
+import org.apache.sling.testing.mock.sling.junit5.SlingContextExtension;
 import org.hamcrest.Matchers;
-import org.junit.Rule;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 
-public class ResourceMatchersTest {
+@ExtendWith(SlingContextExtension.class)
+class ResourceMatchersTest {
 
     // only defined in newer versions of Sling API
     private static final String PROPERTY_RESOURCE_SUPER_TYPE = "sling:resourceSuperType";
 
-    @Rule
-    public final SlingContext context = new SlingContext();
+    private final SlingContext context = new SlingContext();
 
     @Test
-    public void testResourceType() {
+    void testResourceType() {
         context.build()
                 .resource(
                         "/resource",
@@ -60,7 +61,7 @@ public class ResourceMatchersTest {
     }
 
     @Test
-    public void testResourceTypeOrDerived() {
+    void testResourceTypeOrDerived() {
         context.build()
                 .resource(
                         "/resource",
@@ -83,7 +84,7 @@ public class ResourceMatchersTest {
     }
 
     @Test
-    public void testPath() {
+    void testPath() {
         context.build().resource("/resource");
 
         Resource resource = context.resourceResolver().getResource("/resource");
@@ -92,7 +93,7 @@ public class ResourceMatchersTest {
     }
 
     @Test
-    public void testName() {
+    void testName() {
         context.build().resource("/resource");
 
         Resource resource = context.resourceResolver().getResource("/resource");
@@ -101,7 +102,7 @@ public class ResourceMatchersTest {
     }
 
     @Test
-    public void testProps() {
+    void testProps() {
         context.build()
                 .resource(
                         "/resource",
@@ -137,7 +138,7 @@ public class ResourceMatchersTest {
     }
 
     @Test
-    public void testPropsVarargs() {
+    void testPropsVarargs() {
         context.build()
                 .resource(
                         "/resource", "key1", "value1", "key2", true, "key3", new int[] {1, 2, 3}, "key4", "otherValue");
@@ -166,7 +167,7 @@ public class ResourceMatchersTest {
     }
 
     @Test
-    public void testHasChildren() {
+    void testHasChildren() {
         context.build().resource("/parent").resource("child1").resource("/parent/child2");
 
         Resource resource = context.resourceResolver().getResource("/parent");
@@ -174,7 +175,7 @@ public class ResourceMatchersTest {
     }
 
     @Test
-    public void testNameAndProps() {
+    void testNameAndProps() {
         context.build().resource("/resource", "key1", "value1", "key2", new String[] {"item1"}, "key3", "value3");
 
         Map<String, Object> expectedProperties = ImmutableMap.<String, Object>builder()
@@ -197,7 +198,7 @@ public class ResourceMatchersTest {
     }
 
     @Test
-    public void testNameAndPropsVarargs() {
+    void testNameAndPropsVarargs() {
         context.build().resource("/resource", "key1", "value1", "key2", "value2", "key3", "value3");
 
         Object[] expectedProperties = new Object[] {
@@ -220,7 +221,7 @@ public class ResourceMatchersTest {
     }
 
     @Test
-    public void testContainsChildrenInAnyOrder() {
+    void testContainsChildrenInAnyOrder() {
         context.build().resource("/parent").resource("child1").resource("/parent/child2");
 
         Resource resource = context.resourceResolver().getResource("/parent");
@@ -230,7 +231,7 @@ public class ResourceMatchersTest {
     }
 
     @Test
-    public void testContainsChildren() {
+    void testContainsChildren() {
         context.build().resource("/parent").resource("child1").resource("/parent/child2");
 
         Resource resource = context.resourceResolver().getResource("/parent");

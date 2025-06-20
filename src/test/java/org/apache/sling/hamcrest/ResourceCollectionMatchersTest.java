@@ -20,38 +20,38 @@ package org.apache.sling.hamcrest;
 
 import java.util.List;
 
-import com.google.common.collect.ImmutableList;
 import org.apache.sling.api.resource.Resource;
-import org.apache.sling.testing.mock.sling.junit.SlingContext;
-import org.junit.Before;
-import org.junit.Rule;
-import org.junit.Test;
+import org.apache.sling.testing.mock.sling.junit5.SlingContext;
+import org.apache.sling.testing.mock.sling.junit5.SlingContextExtension;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.not;
 
-public class ResourceCollectionMatchersTest {
+@ExtendWith(SlingContextExtension.class)
+class ResourceCollectionMatchersTest {
 
-    @Rule
-    public final SlingContext context = new SlingContext();
+    private final SlingContext context = new SlingContext();
 
     private List<Resource> list;
 
-    @Before
-    public void setUp() {
-        list = ImmutableList.of(
+    @BeforeEach
+    void setUp() {
+        list = List.of(
                 context.create().resource("/content/1"),
                 context.create().resource("/content/2"),
                 context.create().resource("/content/3"));
     }
 
     @Test
-    public void testMatch() {
+    void testMatch() {
         assertThat(list, ResourceCollectionMatchers.paths("/content/1", "/content/2", "/content/3"));
     }
 
     @Test
-    public void testMisMatch() {
+    void testMisMatch() {
         assertThat(list, not(ResourceCollectionMatchers.paths("/content/1", "/content/2", "/content/3", "/content/4")));
         assertThat(list, not(ResourceCollectionMatchers.paths("/content/1", "/content/2")));
         assertThat(list, not(ResourceCollectionMatchers.paths("/content/1", "/content/3", "/content/2")));
